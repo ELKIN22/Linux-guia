@@ -17,20 +17,19 @@ Los **CRON jobs** en Linux son tareas programadas que se ejecutan automáticamen
 
 Una línea en un archivo CRON tiene la siguiente estructura:
 
-\`\`\`plaintext
-* * * * * comando
+```shell script
 | | | | |
 | | | | +--- Día de la semana (0 - 7, donde 0 y 7 son domingo)
 | | | +----- Mes (1 - 12)
 | | +------- Día del mes (1 - 31)
 | +--------- Hora (0 - 23)
 +----------- Minuto (0 - 59)
-\`\`\`
+```
 
 ### Ejemplo:
-\`\`\`plaintext
+```shell script
 30 2 * * * /usr/bin/php /ruta/a/mi/script.php
-\`\`\`
+```
 Este cron job ejecuta el comando `/usr/bin/php /ruta/a/mi/script.php` todos los días a las 2:30 AM.
 
 ### Comodines comunes:
@@ -47,31 +46,31 @@ Este cron job ejecuta el comando `/usr/bin/php /ruta/a/mi/script.php` todos los 
 
 Cada usuario puede configurar sus tareas con:
 
-\`\`\`bash
+```bash
 crontab -e
-\`\`\`
+```
 
 - Los cron jobs se almacenan en `/var/spool/cron/crontabs/<usuario>`.
 - Se ejecutan con los permisos del usuario propietario del crontab.
 
 #### Comandos útiles:
 - **Listar tareas del usuario actual:**
-  \`\`\`bash
+  ```bash
   crontab -l
-  \`\`\`
+  ```
 - **Editar tareas del usuario actual:**
-  \`\`\`bash
+  ```bash
   crontab -e
-  \`\`\`
+  ```
 - **Eliminar todas las tareas del usuario:**
-  \`\`\`bash
+  ```bash
   crontab -r
-  \`\`\`
+  ```
 
 #### Ejemplo:
-\`\`\`plaintext
+```plaintext
 0 3 * * * /usr/bin/backup.sh
-\`\`\`
+```
 Ejecuta el script `backup.sh` todos los días a las 3:00 AM.
 
 ---
@@ -83,14 +82,14 @@ El archivo global controla cron jobs del sistema y de todos los usuarios. Es nec
 - **Ubicación:** `/etc/crontab`
 
 #### Formato:
-\`\`\`plaintext
+```plaintext
 * * * * * usuario comando
-\`\`\`
+```
 
 #### Ejemplo:
-\`\`\`plaintext
+```plaintext
 0 2 * * * root /usr/bin/system-update
-\`\`\`
+```
 Este cron job ejecuta una actualización del sistema diariamente a las 2:00 AM como usuario \`root\`.
 
 ---
@@ -115,9 +114,9 @@ Archivos que contienen cron jobs configurados para usuarios específicos. Son ad
 
 #### Ejemplo:
 El archivo `/var/spool/cron/crontabs/siacolweb` podría contener:
-\`\`\`plaintext
+```plaintext
 0 2 * * * php /home/siacolweb/web/mi-sitio/artisan check:diskspace
-\`\`\`
+```
 Este cron verifica el espacio en disco a las 2:00 AM con los permisos del usuario \`siacolweb\`.
 
 ---
@@ -125,38 +124,38 @@ Este cron verifica el espacio en disco a las 2:00 AM con los permisos del usuari
 ## Casos de Uso Comunes
 
 1. **Respaldo de bases de datos:**
-   \`\`\`bash
+   ```bash
    0 3 * * * /usr/bin/mysqldump -u user -p'password' dbname > /backup/db-$(date +\%F).sql
-   \`\`\`
+   ```
 
 2. **Limpieza de logs antiguos:**
-   \`\`\`bash
+   ```bash
    0 0 * * 0 find /var/log -type f -mtime +30 -exec rm {} \;
-   \`\`\`
+   ```
 
 3. **Actualizar paquetes del sistema:**
-   \`\`\`bash
+   ```bash
    0 4 * * * apt-get update && apt-get upgrade -y
-   \`\`\`
+   ```
 
 4. **Ejecutar un comando de Laravel:**
-   \`\`\`bash
+   ```bash
    30 1 * * * php /var/www/mi-proyecto/artisan schedule:run
-   \`\`\`
+   ```
 
 ---
 
 ## Manejo de la Salida y Logs
 
 - **Redirigir salida estándar y errores a un archivo:**
-  \`\`\`bash
+  ```bash
   * * * * * comando >> /ruta/a/log.txt 2>&1
-  \`\`\`
+  ```
 
 - **Ver logs del servicio CRON:**
-  \`\`\`bash
+  ```bash
   sudo tail -f /var/log/syslog
-  \`\`\`
+  ```
 
 ---
 
@@ -164,9 +163,9 @@ Este cron verifica el espacio en disco a las 2:00 AM con los permisos del usuari
 
 Los cron jobs heredan un entorno mínimo. Para evitar problemas, es útil definir variables como \`PATH\` al inicio del crontab:
 
-\`\`\`plaintext
+```plaintext
 PATH=/usr/local/bin:/usr/bin:/bin
-\`\`\`
+```
 
 ---
 
@@ -181,7 +180,7 @@ PATH=/usr/local/bin:/usr/bin:/bin
 
 ## Ejemplo Completo de un Archivo Crontab
 
-\`\`\`plaintext
+```plaintext
 # Variables de entorno
 MAILTO=admin@example.com
 PATH=/usr/local/bin:/usr/bin:/bin
@@ -194,7 +193,7 @@ PATH=/usr/local/bin:/usr/bin:/bin
 
 # Tarea 3: Actualizar el sistema todos los días a las 4:00 AM
 0 4 * * * apt-get update && apt-get upgrade -y
-\`\`\`
+```
 
 ---
 
